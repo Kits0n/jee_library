@@ -1,6 +1,7 @@
 package user;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +29,16 @@ public class Repository{
         store.createUser(entity);
     }
 
-    public void updateAvatar(Long id, InputStream is) {
+    public byte[] findAvatar(Long id) throws IOException {
+        return store.findAvatar(id);
+    }
+
+    public void updateAvatar(Long id, InputStream is) throws IOException {
         store.updateAvatar(id, is);
+    }
+
+    public void deleteAvatar(Long id) throws IOException {
+        store.deleteAvatar(id);
     }
 }
 

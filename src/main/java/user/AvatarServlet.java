@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = {"/api/avatar/*"})
+@MultipartConfig(maxFileSize = 1024 * 1024)
 public class AvatarServlet extends HttpServlet {
     private Service service;
 
@@ -24,17 +26,17 @@ public class AvatarServlet extends HttpServlet {
     public AvatarServlet(Service service){
         this.service = service;
     }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath() + request.getPathInfo();
         System.out.println("file");
         if(path.matches("/api/avatar/\\d+")){
-            Optional<User> user = service.find(Long.valueOf(path.split("/")[3]));
-            if(user.isPresent()) {
-                Path file = Paths.get("D:\\Studia\\Semestr VII\\NiAJEE\\jee_library\\src\\main\\resources\\"+path.split("/")[3]+".jpg");
-                System.out.println(file);
-                byte[] fileArray = Files.readAllBytes(file);
+            Long id = Long.valueOf(path.split("/")[3]);
+            Optional<User> user = service.find(id);
 
+            if(user.isPresent()) {
+                byte[] fileArray = service.findAvatar(id);
                 response.addHeader(HttpHeaders.CONTENT_TYPE, "image/png");
                 response.setContentLength(fileArray.length);
                 response.getOutputStream().write(fileArray);
@@ -49,7 +51,6 @@ public class AvatarServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath() + request.getPathInfo();
-        System.out.println("file");
         if (path.matches("/api/avatar/\\d+")) {
             Long id = Long.valueOf(path.split("/")[3]);
             Optional<User> user = service.find(id);
@@ -58,6 +59,39 @@ public class AvatarServlet extends HttpServlet {
                 if (avatar != null) {
                     service.updateAvatar(id, avatar.getInputStream());
                 }
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = request.getServletPath() + request.getPathInfo();
+        if (path.matches("/api/avatar/\\d+")) {
+            Long id = Long.valueOf(path.split("/")[3]);
+            Optional<User> user = service.find(id);
+            if (user.isPresent()) {
+                Part avatar = request.getPart("avatar");
+                if (avatar != null) {
+                    service.updateAvatar(id, avatar.getInputStream());
+                }
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = request.getServletPath() + request.getPathInfo();
+        if (path.matches("/api/avatar/\\d+")) {
+            Long id = Long.valueOf(path.split("/")[3]);
+            Optional<User> user = service.find(id);
+            if (user.isPresent()) {
+                service.deleteAvatar(id);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }

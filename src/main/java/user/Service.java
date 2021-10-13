@@ -30,7 +30,15 @@ public class Service {
         repository.create(user);
     }
 
-    public void updateAvatar(Long id, InputStream is) {
+    public byte[] findAvatar(Long id) throws IOException {
+        return repository.findAvatar(id);
+    }
+
+    public void updateAvatar(Long id, InputStream is) throws IOException {
         repository.updateAvatar(id, is);
+    }
+
+    public void deleteAvatar(Long id) throws IOException {
+        repository.deleteAvatar(id);
     }
 }
