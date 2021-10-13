@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = {"/api/user/*"})
-public class Servlet extends HttpServlet {
+public class UserServlet extends HttpServlet {
 
     private Service service;
     private final Jsonb jsonb = JsonbBuilder.create();
 
     @Inject
-    public Servlet(Service service){
+    public UserServlet(Service service){
         this.service = service;
     }
 

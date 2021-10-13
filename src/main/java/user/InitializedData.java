@@ -5,6 +5,8 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.time.LocalDate;
 
+// zasięg - CDI zasięg aplikacji, aktywny od momentu wdrożenia do
+//momentu usunięcia z serwera
 @ApplicationScoped
 public class InitializedData {
 
