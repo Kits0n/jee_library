@@ -1,4 +1,7 @@
-package user;
+package user.repository;
+import datastore.DataStore;
+import user.entity.User;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -6,14 +9,12 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-//odpowiada domyślnemu zasięgowi z JSR 330
-//tworzy nową instancję beana przy każdym wstrzyknięciu,
-//instancja jest niszczona, kiedy obiekt, do którego została wstrzyknięta, jest niszczony.
+// Dependent - każde wstrzyknięcie tworzy nową instancję
 @Dependent
-public class Repository{
+public class UserRepository {
     private DataStore store;
     @Inject
-    public Repository(DataStore store) {
+    public UserRepository(DataStore store) {
         this.store = store;
     }
 
@@ -35,6 +36,10 @@ public class Repository{
 
     public void updateAvatar(Long id, InputStream is) throws IOException {
         store.updateAvatar(id, is);
+    }
+
+    public void createAvatar(Long id, InputStream is) throws IOException {
+        store.createAvatar(id, is);
     }
 
     public void deleteAvatar(Long id) throws IOException {

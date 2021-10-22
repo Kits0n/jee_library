@@ -1,6 +1,7 @@
-package user;
+package datastore;
+import user.entity.User;
+
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,7 +16,8 @@ public class DataStore {
     private Set<User> users = new HashSet<>();
 
     public static String getPath() throws IOException {
-        Path file = Paths.get("/home/student/175548/jee_library/src/main/resources/META-INF/app.properties");
+        Path file = Paths.get("D:\\Studia\\Semestr VII\\NiAJEE\\jee_library\\src\\main\\resources\\META-INF\\app.properties" );
+        System.out.println(Files.readString(file));
         return Files.readString(file);
     }
 
@@ -34,18 +36,37 @@ public class DataStore {
     }
 
     public synchronized byte[] findAvatar(Long id) throws IOException {
-        System.out.println(getPath());
         Path file = Paths.get(getPath()+id+".jpg");
-        return Files.readAllBytes(file);
+        if(Files.exists(file)){
+            return Files.readAllBytes(file);
+        }
+        else{
+            return new byte[0];
+        }
     }
 
     public synchronized void updateAvatar(Long id, InputStream is) throws IOException {
         Path file = Paths.get(getPath()+id+".jpg");
+        if(Files.exists(file)) {
+            Files.write(file, is.readAllBytes());
+        }else{
+            throw new IllegalArgumentException(
+                    String.format("Avatar with id \"%d\" does not exist", id));
+        }
+    }
+
+    public synchronized void createAvatar(Long id, InputStream is) throws IOException {
+        Path file = Paths.get(getPath()+id+".jpg");
         Files.write(file, is.readAllBytes());
     }
 
-    public void deleteAvatar(Long id) throws IOException {
+    public void deleteAvatar(Long id) throws IOException, IllegalArgumentException {
         Path file = Paths.get(getPath()+id+".jpg");
-        Files.delete(file);
+        if(Files.exists(file)) {
+            Files.delete(file);
+        }else{
+            throw new IllegalArgumentException(
+                    String.format("Avatar with id \"%d\" does not exist", id));
+        }
     }
 }

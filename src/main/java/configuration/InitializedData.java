@@ -1,4 +1,7 @@
-package user;
+package configuration;
+import user.entity.User;
+import user.service.UserService;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
@@ -10,10 +13,10 @@ import java.time.LocalDate;
 @ApplicationScoped
 public class InitializedData {
 
-    private final Service service;
+    private final UserService service;
 
     @Inject
-    public InitializedData(Service service) {
+    public InitializedData(UserService service) {
         this.service = service;
     }
 

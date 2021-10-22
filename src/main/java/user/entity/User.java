@@ -1,4 +1,4 @@
-package user;
+package user.entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import java.time.LocalDate;

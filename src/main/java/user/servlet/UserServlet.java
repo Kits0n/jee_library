@@ -1,4 +1,9 @@
-package user;
+package user.servlet;
+import user.service.UserService;
+import user.dto.GetUserResponse;
+import user.dto.GetUsersResponse;
+import user.entity.User;
+
 import javax.inject.Inject;
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
@@ -13,11 +18,11 @@ import java.util.Optional;
 @WebServlet(urlPatterns = {"/api/user/*"})
 public class UserServlet extends HttpServlet {
 
-    private Service service;
+    private UserService service;
     private final Jsonb jsonb = JsonbBuilder.create();
 
     @Inject
-    public UserServlet(Service service){
+    public UserServlet(UserService service){
         this.service = service;
     }
 

@@ -1,5 +1,6 @@
-package user;
+package user.dto;
 import lombok.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -28,7 +29,7 @@ public class GetUsersResponse {
     }
     @Singular
     private List<User> users;
-    public static Function<Collection<user.User>, GetUsersResponse> entityToDtoMapper() {
+    public static Function<Collection<user.entity.User>, GetUsersResponse> entityToDtoMapper() {
         return users -> {
             GetUsersResponse.GetUsersResponseBuilder response = GetUsersResponse.builder();
             users.stream()

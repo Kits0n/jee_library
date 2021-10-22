@@ -1,5 +1,7 @@
-package user;
+package user.dto;
 import lombok.*;
+import user.entity.User;
+
 import java.time.LocalDate;
 import java.util.function.Function;
 

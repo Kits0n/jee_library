@@ -1,5 +1,8 @@
-package user;
+package user.service;
 import lombok.NoArgsConstructor;
+import user.entity.User;
+import user.repository.UserRepository;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -11,10 +14,10 @@ import java.util.Optional;
 //momentu usunięcia z serwera
 @ApplicationScoped
 @NoArgsConstructor
-public class Service {
-    private Repository repository;
+public class UserService {
+    private UserRepository repository;
     @Inject
-    public Service(Repository repository) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
 
     }
@@ -36,6 +39,10 @@ public class Service {
 
     public void updateAvatar(Long id, InputStream is) throws IOException {
         repository.updateAvatar(id, is);
+    }
+
+    public void createAvatar(Long id, InputStream is) throws IOException {
+        repository.createAvatar(id, is);
     }
 
     public void deleteAvatar(Long id) throws IOException {
