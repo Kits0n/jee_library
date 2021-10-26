@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <ui:define name="content">
+
+        <article class="text--justified">
+            <header><h2>Books</h2></header>
+            <h:dataTable value="#{bookList.books.books}" var="book" styleClass="data-table">
+                <h:column>
+                    <f:facet name="header">title</f:facet>
+                    <h:outputText value="#{book.title}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">view</f:facet>
+                    <h:link outcome="/book/book_view.xhtml" value="view">
+                        <f:param name="id" value="#{book.id}"/>
+                    </h:link>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">delete</f:facet>
+                    <h:form>
+                        <h:commandButton styleClass="ui-button ui-control" value="delete"
+                                         action="#{bookList.deleteAction(book.id)}"/>
+                    </h:form>
+                </h:column>
+            </h:dataTable>
+        </article>
+
+    </ui:define>
+
+</ui:composition>

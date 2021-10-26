@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view>
+        <h:head>
+            <meta charset="UTF-8"/>
+            <meta name="description" content="Library"/>
+            <meta name="keywords" content="Book"/>
+            <meta name="author" content="Patryk Kitowski"/>
+            <title>Library</title>
+            <h:outputStylesheet library="default" name="css/styles.css"/>
+
+        </h:head>
+        <h:body>
+            <div class="container">
+                <header class="header">
+                    <h1>Library</h1>
+                    <h:graphicImage class="png" library="default" name="png/logo.png"/>
+                </header>
+
+                <nav class="navigation-bar">
+                    <ul>
+                        <li><h:link outcome="/index.xhtml">main</h:link></li>
+                        <li><h:link outcome="/book/book_list.xhtml">books</h:link></li>
+                    </ul>
+                </nav>
+
+                <section class="info-section">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>Duis tincidunt diam ante, at commodo libero condimentum vel.</p>
+                    <p>Duis cursus dignissim euismod. Pellentesque habitant morbi tristique senectus et</p>
+                    <p>netus et malesuada fames ac turpis egestas. Interdum et malesuada fames ac ante</p>
+                    <p>ipsum primis in faucibus.</p>
+                </section>
+
+                <section class="main-section">
+                    <ui:insert name="content"/>
+                </section>
+
+                <footer class="footer">
+                    <p>Copyright &#169; 2021, Patryk Kitowski</p>
+                </footer>
+            </div>
+        </h:body>
+    </f:view>
+</html>

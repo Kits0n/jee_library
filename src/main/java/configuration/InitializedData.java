@@ -1,4 +1,8 @@
 package configuration;
+import book.entity.Book;
+import book.service.BookService;
+import rental.entity.Rental;
+import rental.service.RentalService;
 import user.entity.User;
 import user.service.UserService;
 
@@ -13,11 +17,15 @@ import java.time.LocalDate;
 @ApplicationScoped
 public class InitializedData {
 
-    private final UserService service;
+    private final UserService userService;
+    private final BookService bookService;
+    private final RentalService rentalService;
 
     @Inject
-    public InitializedData(UserService service) {
-        this.service = service;
+    public InitializedData(UserService userService, BookService bookService, RentalService rentalService) {
+        this.userService = userService;
+        this.bookService = bookService;
+        this.rentalService = rentalService;
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -58,9 +66,41 @@ public class InitializedData {
                 .email("email4@gmail.com")
                 .build();
 
-        service.create(user1);
-        service.create(user2);
-        service.create(user3);
-        service.create(user4);
+        userService.create(user1);
+        userService.create(user2);
+        userService.create(user3);
+        userService.create(user4);
+
+        Book book1 = Book.builder()
+                .title("title1")
+                .author("author1")
+                .numberOfPages(1)
+                .publicationDate(LocalDate.of(2001, 1, 1))
+                .build();
+
+        Book book2 = Book.builder()
+                .title("title2")
+                .author("author2")
+                .numberOfPages(12)
+                .publicationDate(LocalDate.of(2002, 2, 2))
+                .build();
+
+
+        bookService.create(book1);
+        bookService.create(book2);
+
+        Rental rental1 = Rental.builder()
+                .type("COLLECTION")
+                .book(book1)
+                .date(LocalDate.of(2002, 2, 2))
+                .build();
+
+        Rental rental2 = Rental.builder()
+                .type("RETURN")
+                .book(book1)
+                .date(LocalDate.of(2002, 3, 2))
+                .build();
+        rentalService.create(rental1);
+        rentalService.create(rental2);
     }
 }

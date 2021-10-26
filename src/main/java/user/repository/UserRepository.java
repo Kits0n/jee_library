@@ -26,8 +26,8 @@ public class UserRepository {
         return store.findAllUsers();
     }
 
-    public void create(User entity) {
-        store.createUser(entity);
+    public void create(User user) {
+        store.createUser(user);
     }
 
     public byte[] findAvatar(Long id) throws IOException {

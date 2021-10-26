@@ -1,4 +1,6 @@
 package datastore;
+import book.entity.Book;
+import rental.entity.Rental;
 import user.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -9,24 +11,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 // zasięg - CDI zasięg aplikacji, aktywny od momentu wdrożenia do
 //momentu usunięcia z serwera
 @ApplicationScoped
 public class DataStore {
     private Set<User> users = new HashSet<>();
-
-    public static String getPath(){
-        try (InputStream input = new FileInputStream("../../../../../../app.properties")) {
-
-            Properties prop = new Properties();
-            prop.load(input);
-            return prop.getProperty("path");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+    private Set<Book> books = new HashSet<>();
+    private Set<Rental> rentals = new HashSet<>();
 
     public synchronized Optional<User> findUser(Long id) {
         return users.stream()
@@ -80,5 +73,74 @@ public class DataStore {
             throw new IllegalArgumentException(
                     String.format("Avatar with id \"%d\" does not exist", id));
         }
+    }
+
+    public synchronized Optional<Book> findBook(Long id) {
+        return books.stream()
+                .filter(book -> book.getId().equals(id))
+                .findFirst();
+    }
+    public synchronized List<Book> findAllBooks() {
+        return new ArrayList<>(books);
+    }
+
+    public synchronized void deleteBook(Long id) throws IllegalArgumentException {
+
+        Optional<Book> book = findBook(id);
+        if(book.isPresent()){
+            books.remove(book.get());
+            rentals.removeAll(findAllRentals(id));
+        } else
+            throw new IllegalArgumentException(
+                            String.format("The book with id \"%d\" does not exist", id));
+    }
+
+    public synchronized void createBook(Book book){
+        book.setId((long) books.size());
+        books.add(book);
+    }
+
+
+
+
+
+
+    public synchronized void createRental(Rental rental){
+        rental.setId((long) rentals.size());
+        rentals.add(rental);
+    }
+
+    public synchronized Optional<Rental> findRental(Long id) {
+        return rentals.stream()
+                .filter(rental -> rental.getId().equals(id))
+                .findFirst();
+    }
+    public synchronized List<Rental> findAllRentals(Long id) {
+        //return new ArrayList<>(rentals);
+        return rentals.stream()
+                .filter(rental -> rental.getBook().getId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+    public synchronized void deleteRental(Long id) throws IllegalArgumentException {
+        Optional<Rental> rental = findRental(id);
+        if(rental.isPresent()){
+            rentals.remove(rental.get());
+        } else
+            throw new IllegalArgumentException(
+                    String.format("The rental with id \"%d\" does not exist", id));
+    }
+
+
+    public static String getPath(){
+        try (InputStream input = new FileInputStream("../../../../../../app.properties")) {
+
+            Properties prop = new Properties();
+            prop.load(input);
+            return prop.getProperty("path");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
