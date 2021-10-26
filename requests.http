@@ -6,11 +6,11 @@ GET http://localhost:9080/library/api/user
 
 ###
 
-GET http://localhost:9080/library/api/avatar/2
+GET http://localhost:9080/library/api/avatar/3
 
 ###
 
-PUT http://localhost:9080/library/api/avatar/2
+PUT http://localhost:9080/library/api/avatar/3
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
@@ -20,7 +20,7 @@ Content-Disposition: form-data; name="avatar"; filename="cat.jpg'
 --boundary--
 
 ###
-POST http://localhost:9080/library/api/avatar/2
+POST http://localhost:9080/library/api/avatar/1
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary

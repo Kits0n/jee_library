@@ -2,6 +2,7 @@ package datastore;
 import user.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,10 +16,16 @@ import java.util.*;
 public class DataStore {
     private Set<User> users = new HashSet<>();
 
-    public static String getPath() throws IOException {
-        Path file = Paths.get("D:\\Studia\\Semestr VII\\NiAJEE\\jee_library\\src\\main\\resources\\META-INF\\app.properties" );
-        System.out.println(Files.readString(file));
-        return Files.readString(file);
+    public static String getPath(){
+        try (InputStream input = new FileInputStream("../../../../../../app.properties")) {
+
+            Properties prop = new Properties();
+            prop.load(input);
+            return prop.getProperty("path");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public synchronized Optional<User> findUser(Long id) {
@@ -57,7 +64,12 @@ public class DataStore {
 
     public synchronized void createAvatar(Long id, InputStream is) throws IOException {
         Path file = Paths.get(getPath()+id+".jpg");
-        Files.write(file, is.readAllBytes());
+        if(!Files.exists(file)) {
+            Files.write(file, is.readAllBytes());
+        }else {
+            throw new IllegalArgumentException(
+                    String.format("Avatar with id \"%d\" already exists", id));
+        }
     }
 
     public void deleteAvatar(Long id) throws IOException, IllegalArgumentException {
