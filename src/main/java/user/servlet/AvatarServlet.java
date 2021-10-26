@@ -102,12 +102,11 @@ public class AvatarServlet extends HttpServlet {
                 byte[] fileArray = service.findAvatar(id);
                 if (fileArray.length == 0) {
                     service.createAvatar(id, avatar.getInputStream());
-                    response.addHeader(HttpHeaders.LOCATION, UrlFactory.createUrl(request, "/api/avatar/" + id));
+                    response.addHeader(HttpHeaders.LOCATION, UrlFactory.createUrl(request, "api/avatar/" + id));
                     response.setStatus(HttpServletResponse.SC_CREATED);
                 } else {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
-
             } else {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
@@ -118,11 +117,9 @@ public class AvatarServlet extends HttpServlet {
 
     private void deleteAvatar(HttpServletResponse response, String path) throws IOException {
         Long id = Long.valueOf(path.split("/")[3]);
-        Optional<User> user = service.find(id);
-        if (user.isPresent()) {
+        byte[] fileArray = service.findAvatar(id);
+        if (fileArray.length != 0) {
             service.deleteAvatar(id);
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }
