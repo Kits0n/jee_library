@@ -100,11 +100,6 @@ public class DataStore {
         books.add(book);
     }
 
-
-
-
-
-
     public synchronized void createRental(Rental rental){
         rental.setId((long) rentals.size());
         rentals.add(rental);
@@ -123,9 +118,12 @@ public class DataStore {
     }
 
     public synchronized void deleteRental(Long id) throws IllegalArgumentException {
+
         Optional<Rental> rental = findRental(id);
         if(rental.isPresent()){
+            System.out.println(rentals.size());
             rentals.remove(rental.get());
+            System.out.println(rentals.size());
         } else
             throw new IllegalArgumentException(
                     String.format("The rental with id \"%d\" does not exist", id));

@@ -12,13 +12,16 @@
 
     <ui:define name="content">
         <article class="text--justified">
-            <header><h2><h:outputText value="#{rentalView.rental.date}"/></h2></header>
+            <header><h2>Rental: <h:outputText value="#{rentalView.rental.date}"/></h2></header>
             <div>
                 <div>
                     Type: <h:outputText value="#{rentalView.rental.type}"/>
                 </div>
                 <div>
                     Book: <h:outputText value="#{rentalView.rental.book.getTitle()}"/>
+                </div>
+                <div>
+                    User: <h:outputText value="#{rentalView.rental.user.getLogin()}"/>
                 </div>
 
             </div>

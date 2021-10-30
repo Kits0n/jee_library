@@ -84,23 +84,55 @@ public class InitializedData {
                 .numberOfPages(12)
                 .publicationDate(LocalDate.of(2002, 2, 2))
                 .build();
+        Book book3 = Book.builder()
+                .title("title3")
+                .author("author3")
+                .numberOfPages(3)
+                .publicationDate(LocalDate.of(2003, 3, 3))
+                .build();
 
+        Book book4 = Book.builder()
+                .title("title4")
+                .author("author4")
+                .numberOfPages(14)
+                .publicationDate(LocalDate.of(2004, 4, 4))
+                .build();
 
         bookService.create(book1);
         bookService.create(book2);
+        bookService.create(book3);
+        bookService.create(book4);
 
         Rental rental1 = Rental.builder()
                 .type("COLLECTION")
                 .book(book1)
                 .date(LocalDate.of(2002, 2, 2))
+                .user(user1)
                 .build();
 
         Rental rental2 = Rental.builder()
                 .type("RETURN")
                 .book(book1)
                 .date(LocalDate.of(2002, 3, 2))
+                .user(user1)
+                .build();
+
+        Rental rental3 = Rental.builder()
+                .type("COLLECTION")
+                .book(book2)
+                .date(LocalDate.of(2002, 2, 2))
+                .user(user2)
+                .build();
+
+        Rental rental4 = Rental.builder()
+                .type("COLLECTION")
+                .book(book2)
+                .date(LocalDate.of(2002, 3, 2))
+                .user(user3)
                 .build();
         rentalService.create(rental1);
         rentalService.create(rental2);
+        rentalService.create(rental3);
+        rentalService.create(rental4);
     }
 }

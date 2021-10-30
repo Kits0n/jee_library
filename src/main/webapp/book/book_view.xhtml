@@ -12,7 +12,7 @@
 
     <ui:define name="content">
         <article class="text--justified">
-            <header><h2><h:outputText value="#{bookView.book.title}"/></h2></header>
+            <header><h2>Book: <h:outputText value="#{bookView.book.title}"/></h2></header>
             <div>
                 <div>
                     Author: <h:outputText value="#{bookView.book.author}"/>
@@ -40,7 +40,7 @@
                     <f:facet name="header">delete</f:facet>
                     <h:form>
                         <h:commandButton styleClass="ui-button ui-control" value="delete"
-                                         action="#{rentalList.deleteAction(rental.id)}"/>
+                                         action="#{rentalList.deleteAction(rental.id, bookView.id)}"/>
                     </h:form>
                 </h:column>
             </h:dataTable>

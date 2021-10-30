@@ -43,7 +43,7 @@ public class RentalView implements Serializable {
             this.rental = RentalModel.entityToModelMapper().apply(rental.get());
         } else {
             FacesContext.getCurrentInstance().getExternalContext()
-                    .responseSendError(HttpServletResponse.SC_NOT_FOUND, "Book not found");
+                    .responseSendError(HttpServletResponse.SC_NOT_FOUND, "Rental not found");
         }
     }
 

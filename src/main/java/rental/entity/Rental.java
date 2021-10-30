@@ -3,6 +3,7 @@ package rental.entity;
 import book.entity.Book;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import user.entity.User;
 
 import java.time.LocalDate;
 
@@ -18,4 +19,5 @@ public class Rental {
     private LocalDate date;
     private String type;
     private Book book;
+    private User user;
 }

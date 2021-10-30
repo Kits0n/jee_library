@@ -134,10 +134,7 @@ body {
 
 .data-table thead {
     font-weight: bold;
-    background-color: #548BA1;
-    color: #214753;
+    background-color: #858686;
+    color: black;
 }
 
-.data-table tbody tr:hover {
-    background-color: #96C4D8;
-}

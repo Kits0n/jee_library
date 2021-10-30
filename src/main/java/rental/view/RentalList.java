@@ -5,12 +5,14 @@ import book.service.BookService;
 import rental.model.RentalsModel;
 import rental.service.RentalService;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
-@RequestScoped
+@ViewScoped
 @Named
 public class RentalList implements Serializable {
 
@@ -29,9 +31,10 @@ public class RentalList implements Serializable {
         return rentals;
     }
 
-    public String deleteAction(Long id)  {
-       rentalService.delete(id);
-        return "rental_list?faces-redirect=true";
+    public String deleteAction(Long id, Long id2)  {
+        rentalService.delete(id);
+        return "book_view?id="+id2+"&faces-redirect=true";
     }
+
 
 }

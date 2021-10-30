@@ -5,6 +5,8 @@ import book.model.BookModel;
 import book.service.BookService;
 import lombok.Getter;
 import lombok.Setter;
+import rental.service.RentalService;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -21,6 +23,7 @@ public class BookView implements Serializable {
 
     private final BookService bookService;
 
+
     @Setter
     @Getter
     private Long id;
@@ -31,6 +34,7 @@ public class BookView implements Serializable {
     @Inject
     public BookView(BookService bookService) {
         this.bookService = bookService;
+
     }
 
     public void init() throws IOException {
@@ -43,5 +47,5 @@ public class BookView implements Serializable {
         }
     }
 
-    
+
 }
