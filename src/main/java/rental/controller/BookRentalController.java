@@ -54,8 +54,14 @@ public class BookRentalController {
     @GET
     @Path("/books/{id}/rentals")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRentals(@PathParam("id") Long id) {
-        return Response.ok(GetRentalsResponse.entityToDtoMapper().apply(rentalService.findAll(id))).build();
+    public Response getRentals(@PathParam("id") Long book_id) {
+        Optional<Book> book = bookService.find(book_id);
+        if(book.isPresent())
+        {
+            return Response.ok(GetRentalsResponse.entityToDtoMapper().apply(rentalService.findAll(book_id))).build();
+        }else{
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @GET
