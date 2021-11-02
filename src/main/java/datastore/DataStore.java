@@ -20,6 +20,9 @@ public class DataStore {
     private Set<User> users = new HashSet<>();
     private Set<Book> books = new HashSet<>();
     private Set<Rental> rentals = new HashSet<>();
+    private Long user_id = 0L;
+    private Long book_id = 0L;
+    private Long rental_id = 0L;
 
     public synchronized Optional<User> findUser(Long id) {
         return users.stream()
@@ -31,8 +34,9 @@ public class DataStore {
     }
 
     public synchronized void createUser(User user){
-        user.setId((long) users.size());
+        user.setId(user_id);
         users.add(user);
+        user_id++;
     }
 
     public synchronized byte[] findAvatar(Long id) throws IOException {
@@ -96,13 +100,45 @@ public class DataStore {
     }
 
     public synchronized void createBook(Book book){
-        book.setId((long) books.size());
+        book.setId(book_id);
         books.add(book);
+        book_id++;
     }
 
-    public synchronized void createRental(Rental rental){
-        rental.setId((long) rentals.size());
-        rentals.add(rental);
+    public void updateBook(Book book) {
+        Optional<Book> book2 = findBook(book.getId());
+        if(book2.isPresent()){
+            books.remove(book2.get());
+            books.add(book);
+        } else
+            throw new IllegalArgumentException(
+                    String.format("The book with id \"%d\" does not exist", book.getId()));
+    }
+
+    public synchronized void createRental(Rental rental, Long book_id){
+        rental.setId(rental_id);
+        Optional<Book> book  = findBook(book_id);
+        if(book.isPresent()){
+            rental.setBook(book.get());
+            rentals.add(rental);
+            rental_id++;
+        } else
+            throw new IllegalArgumentException(
+            String.format("The book with id \"%d\" does not exist", book_id));
+    }
+
+    public void updateRental(Rental rental, Long book_id) {
+        Optional<Book> book = findBook(book_id);
+        if(book.isPresent()){
+            Optional<Rental> rental2 = findRental(rental.getId());
+            if(rental2.isPresent()){
+                rentals.remove(rental2.get());
+                rental.setBook(book.get());
+                rentals.add(rental);
+            }else
+                throw new IllegalArgumentException(String.format("The rental with id \"%d\" does not exist", rental.getId()));
+        } else
+            throw new IllegalArgumentException(String.format("The book with id \"%d\" does not exist", book_id));
     }
 
     public synchronized Optional<Rental> findRental(Long id) {
@@ -110,10 +146,14 @@ public class DataStore {
                 .filter(rental -> rental.getId().equals(id))
                 .findFirst();
     }
-    public synchronized List<Rental> findAllRentals(Long id) {
-        //return new ArrayList<>(rentals);
+
+    public synchronized List<Rental> findAllRentals() {
+        return new ArrayList<>(rentals);
+    }
+
+    public synchronized List<Rental> findAllRentals(Long book_id) {
         return rentals.stream()
-                .filter(rental -> rental.getBook().getId().equals(id))
+                .filter(rental -> rental.getBook().getId().equals(book_id))
                 .collect(Collectors.toList());
     }
 
@@ -141,4 +181,6 @@ public class DataStore {
         }
         return null;
     }
+
+
 }

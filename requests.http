@@ -1,3 +1,85 @@
+
+GET http://localhost:9080/library/api/books
+
+###
+
+GET http://localhost:9080/library/api/books/4
+
+###
+
+POST http://localhost:9080/library/api/books
+Content-Type: application/json
+
+{
+  "title": "title1",
+  "author": "author",
+  "numberOfPages": 18,
+  "publicationDate": "1999-08-21"
+}
+
+###
+
+PUT http://localhost:9080/library/api/books/3
+Content-Type: application/json
+
+{
+  "title": "title9",
+  "author": "author",
+  "numberOfPages": 18,
+  "publicationDate": "1999-08-21"
+}
+
+###
+
+DELETE http://localhost:9080/library/api/books/1
+
+###
+
+
+GET http://localhost:9080/library/api/rentals
+
+###
+
+GET http://localhost:9080/library/api/books/1/rentals
+
+###
+
+GET http://localhost:9080/library/api/rentals/4
+
+###
+
+POST http://localhost:9080/library/api/books/1/rentals
+Content-Type: application/json
+
+{
+  "type": "RETURN",
+  "userId": 1,
+  "date": "1999-08-21"
+}
+
+###
+
+PUT http://localhost:9080/library/api/books/3/rentals/4
+Content-Type: application/json
+
+{
+  "type": "RETURN",
+  "userId": 1,
+  "date": "1989-08-21"
+}
+
+###
+
+DELETE http://localhost:9080/library/api/rentals/0
+
+
+
+
+
+
+
+###
+
 GET http://localhost:9080/library/api/user/1
 
 ###

@@ -28,11 +28,19 @@ public class RentalRepository {
         return store.findAllRentals(id);
     }
 
+    public List<Rental> findAll() {
+        return store.findAllRentals();
+    }
+
     public void delete(Long id) {
         store.deleteRental(id);
     }
 
-    public void create(Rental rental) {
-        store.createRental(rental);
+    public void create(Rental rental, Long id) {
+        store.createRental(rental, id);
+    }
+
+    public void update(Rental rental, Long id) {
+        store.updateRental(rental, id);
     }
 }

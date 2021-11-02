@@ -130,9 +130,9 @@ public class InitializedData {
                 .date(LocalDate.of(2002, 3, 2))
                 .user(user3)
                 .build();
-        rentalService.create(rental1);
-        rentalService.create(rental2);
-        rentalService.create(rental3);
-        rentalService.create(rental4);
+        rentalService.create(rental1, (long) 1);
+        rentalService.create(rental2, (long) 1);
+        rentalService.create(rental3, (long) 2);
+        rentalService.create(rental4, (long) 2);
     }
 }

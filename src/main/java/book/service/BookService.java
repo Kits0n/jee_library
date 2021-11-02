@@ -38,4 +38,8 @@ public class BookService {
     public void create(Book book) {
         bookRepository.create(book);
     }
+
+    public void update(Book book) {
+        bookRepository.update(book);
+    }
 }

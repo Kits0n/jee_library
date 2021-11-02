@@ -36,4 +36,8 @@ public class BookRepository {
     public void create(Book book) {
         store.createBook(book);
     }
+
+    public void update(Book book) {
+        store.updateBook(book);
+    }
 }

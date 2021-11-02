@@ -30,11 +30,19 @@ public class RentalService {
         return rentalRepository.findAll(id);
     }
 
+    public List<Rental> findAll() {
+        return rentalRepository.findAll();
+    }
+
     public void delete(Long id) {
         rentalRepository.delete(id);
     }
 
-    public void create(Rental rental) {
-        rentalRepository.create(rental);
+    public void create(Rental rental, Long id) {
+        rentalRepository.create(rental, id);
+    }
+
+    public void update(Rental rental, Long id) {
+        rentalRepository.update(rental, id);
     }
 }
