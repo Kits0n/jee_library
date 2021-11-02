@@ -1,9 +1,12 @@
 package user.repository;
 import datastore.DataStore;
+import rental.entity.Rental;
 import user.entity.User;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -13,21 +16,28 @@ import java.util.Optional;
 @Dependent
 public class UserRepository {
     private DataStore store;
+    private EntityManager em;
+
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+
     @Inject
     public UserRepository(DataStore store) {
         this.store = store;
     }
 
     public Optional<User> find(Long id) {
-        return store.findUser(id);
+        return Optional.ofNullable(em.find(User.class, id));
     }
 
     public List<User> findAll() {
-        return store.findAllUsers();
+        return em.createQuery("select u from user u", User.class).getResultList();
     }
 
     public void create(User user) {
-        store.createUser(user);
+        em.persist(user);
     }
 
     public byte[] findAvatar(Long id) throws IOException {

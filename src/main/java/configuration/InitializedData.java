@@ -8,6 +8,7 @@ import user.service.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
+import javax.enterprise.context.control.RequestContextController;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.time.LocalDate;
@@ -20,12 +21,14 @@ public class InitializedData {
     private final UserService userService;
     private final BookService bookService;
     private final RentalService rentalService;
+    private RequestContextController requestContextController;
 
     @Inject
-    public InitializedData(UserService userService, BookService bookService, RentalService rentalService) {
+    public InitializedData(UserService userService, BookService bookService, RentalService rentalService, RequestContextController requestContextController) {
         this.userService = userService;
         this.bookService = bookService;
         this.rentalService = rentalService;
+        this.requestContextController = requestContextController;
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -33,6 +36,8 @@ public class InitializedData {
     }
 
     private void init(){
+        requestContextController.activate();// start request scope in order to inject request scoped repositories
+
         User user1 = User.builder()
                 .login("user1")
                 .password("password1")
@@ -130,9 +135,11 @@ public class InitializedData {
                 .date(LocalDate.of(2002, 3, 2))
                 .user(user3)
                 .build();
-        rentalService.create(rental1, (long) 1);
-        rentalService.create(rental2, (long) 1);
-        rentalService.create(rental3, (long) 2);
-        rentalService.create(rental4, (long) 2);
+        rentalService.create(rental1);
+        rentalService.create(rental2);
+        rentalService.create(rental3);
+        rentalService.create(rental4);
+
+        requestContextController.deactivate();
     }
 }

@@ -5,42 +5,45 @@ import datastore.DataStore;
 import rental.entity.Rental;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Dependent
+@RequestScoped
 public class RentalRepository {
 
-    private DataStore store;
+    private EntityManager em;
 
-    @Inject
-    public RentalRepository(DataStore store) {
-        this.store = store;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
 
     public Optional<Rental> find(Long id) {
-        return store.findRental(id);
+        return Optional.ofNullable(em.find(Rental.class, id));
     }
 
     public List<Rental> findAll(Long id) {
-        return store.findAllRentals(id);
+        return em.createQuery("select r from Rental r where r.book.id = :id", Rental.class).getResultList();
     }
 
     public List<Rental> findAll() {
-        return store.findAllRentals();
+        return em.createQuery("select r from Rental r", Rental.class).getResultList();
     }
 
     public void delete(Long id) {
-        store.deleteRental(id);
+        em.remove(em.find(Rental.class, id));
     }
 
-    public void create(Rental rental, Long id) {
-        store.createRental(rental, id);
+    public void create(Rental rental) {
+        em.persist(rental);
     }
 
-    public void update(Rental rental, Long id) {
-        store.updateRental(rental, id);
+    public void update(Rental rental) {
+        em.merge(rental);
     }
 }

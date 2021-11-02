@@ -54,8 +54,14 @@ public class BookRentalController {
     @GET
     @Path("/books/{id}/rentals")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRentals(@PathParam("id") Long id) {
-        return Response.ok(GetRentalsResponse.entityToDtoMapper().apply(rentalService.findAll(id))).build();
+    public Response getRentals(@PathParam("id") Long book_id) {
+        Optional<Book> book = bookService.find(book_id);
+        if(book.isPresent())
+        {
+            return Response.ok(GetRentalsResponse.entityToDtoMapper().apply(rentalService.findAll(book_id))).build();
+        }else{
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
     @GET
@@ -82,7 +88,8 @@ public class BookRentalController {
             Rental rental = CreateRentalRequest
                     .dtoToEntityMapper(userId-> userService.find(userId).orElse(null))
                     .apply(request);
-            rentalService.create(rental, book_id);
+            rental.setBook(book.get());
+            rentalService.create(rental);
             return Response.created(UriBuilder.fromMethod(BookRentalController.class, "getRental")
                     .build(rental.getId())).build();
         }else{
@@ -100,7 +107,8 @@ public class BookRentalController {
         {
             if(request != null){
                 UpdateRentalRequest.dtoToEntityUpdater(userId-> userService.find(userId).orElse(null)).apply(rental.get(), request);
-                rentalService.update(rental.get(), book_id);
+                rental.get().setBook(book.get());
+                rentalService.update(rental.get());
                 return Response.ok().build();
             }
             return Response.noContent().build();

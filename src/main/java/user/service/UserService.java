@@ -5,6 +5,7 @@ import user.repository.UserRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -28,7 +29,7 @@ public class UserService {
     public List<User> findAll() {
         return repository.findAll();
     }
-
+    @Transactional
     public void create(User user) {
         repository.create(user);
     }

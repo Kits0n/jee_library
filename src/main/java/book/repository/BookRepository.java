@@ -5,39 +5,43 @@ import datastore.DataStore;
 import user.entity.User;
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@Dependent
+@RequestScoped
 public class BookRepository {
 
-    private DataStore store;
 
-    @Inject
-    public BookRepository(DataStore store) {
-        this.store = store;
+    private EntityManager em;
+
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
 
     public Optional<Book> find(Long id) {
-        return store.findBook(id);
+        return Optional.ofNullable(em.find(Book.class, id));
     }
 
     public List<Book> findAll() {
-        return store.findAllBooks();
+        return em.createQuery("select b from Book b", Book.class).getResultList();
     }
 
     public void delete(Long id) {
-        store.deleteBook(id);
+        em.remove(em.find(Book.class, id));
     }
 
     public void create(Book book) {
-        store.createBook(book);
+        em.persist(book);
     }
 
     public void update(Book book) {
-        store.updateBook(book);
+        em.merge(book);
     }
 }

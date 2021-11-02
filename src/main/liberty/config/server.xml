@@ -9,5 +9,20 @@
         <feature>jsp-2.3</feature>
         <feature>el-3.0</feature>
         <feature>jaxrs-2.1</feature>
+        <feature>jpa-2.2</feature>
     </featureManager>
+
+    <dataSource id="library" jndiName="jdbc/library">
+        <jdbcDriver javax.sql.XADataSource="org.h2.jdbcx.JdbcDataSource"
+                    javax.sql.ConnectionPoolDataSource="org.h2.jdbcx.JdbcDataSource"
+                    javax.sql.DataSource="org.h2.jdbcx.JdbcDataSource"
+                    libraryRef="H2JDBCLib"/>
+        <properties URL="jdbc:h2:mem:library"/>
+    </dataSource>
+
+    <library id="H2JDBCLib">
+        <fileset dir="C:\Users\kitso\.IntelliJIdea2019.3\config\jdbc-drivers\H2\1.4.200" includes="h2-1.4.200.jar"/>
+    </library>
+<!--<fileset dir="${wlp.install.dir}/usr/shared/resources" includes="h2-1.4.200.jar"/>-->
+    <logging consoleLogLevel="INFO" />
 </server>

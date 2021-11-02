@@ -7,6 +7,7 @@ import rental.repository.RentalRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,15 +35,18 @@ public class RentalService {
         return rentalRepository.findAll();
     }
 
+    @Transactional
     public void delete(Long id) {
         rentalRepository.delete(id);
     }
 
-    public void create(Rental rental, Long id) {
-        rentalRepository.create(rental, id);
+    @Transactional
+    public void create(Rental rental) {
+        rentalRepository.create(rental);
     }
 
-    public void update(Rental rental, Long id) {
-        rentalRepository.update(rental, id);
+    @Transactional
+    public void update(Rental rental) {
+        rentalRepository.update(rental);
     }
 }
