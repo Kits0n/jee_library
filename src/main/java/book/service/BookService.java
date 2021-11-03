@@ -3,6 +3,8 @@ package book.service;
 import book.entity.Book;
 import book.repository.BookRepository;
 import lombok.NoArgsConstructor;
+import rental.entity.Rental;
+import rental.repository.RentalRepository;
 import user.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class BookService {
 
     private BookRepository bookRepository;
+    private RentalRepository rentalRepository;
 
     @Inject
     public BookService(BookRepository bookRepository)
@@ -43,4 +46,5 @@ public class BookService {
     public void update(Book book) {
         bookRepository.update(book);
     }
+
 }

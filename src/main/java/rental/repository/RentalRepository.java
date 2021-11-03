@@ -9,6 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,10 @@ public class RentalRepository {
     }
 
     public List<Rental> findAll(Long id) {
-        return em.createQuery("select r from Rental r where r.book.id = :id", Rental.class).getResultList();
+        String queryString = "SELECT r FROM Rental r JOIN r.book b WHERE b.id = :id";
+        Query query = em.createQuery(queryString, Book.class);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 
     public List<Rental> findAll() {
@@ -45,5 +49,8 @@ public class RentalRepository {
 
     public void update(Rental rental) {
         em.merge(rental);
+    }
+    public void detach(Rental rental) {
+        em.detach(rental);
     }
 }

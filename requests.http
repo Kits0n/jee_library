@@ -3,7 +3,7 @@ GET http://localhost:9080/library/api/books
 
 ###
 
-GET http://localhost:9080/library/api/books/13
+GET http://localhost:9080/library/api/books/5
 
 ###
 
@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:9080/library/api/books/1
+DELETE http://localhost:9080/library/api/books/5
 
 ###
 
@@ -40,15 +40,15 @@ GET http://localhost:9080/library/api/rentals
 
 ###
 
-GET http://localhost:9080/library/api/books/1/rentals
+GET http://localhost:9080/library/api/books/5/rentals
 
 ###
 
-GET http://localhost:9080/library/api/rentals/4
+GET http://localhost:9080/library/api/rentals/12
 
 ###
 
-POST http://localhost:9080/library/api/books/1/rentals
+POST http://localhost:9080/library/api/books/8/rentals
 Content-Type: application/json
 
 {
@@ -59,7 +59,7 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:9080/library/api/books/3/rentals/4
+PUT http://localhost:9080/library/api/books/5/rentals/12
 Content-Type: application/json
 
 {
@@ -70,8 +70,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:9080/library/api/rentals/0
-
+DELETE http://localhost:9080/library/api/rentals/10
 
 
 
